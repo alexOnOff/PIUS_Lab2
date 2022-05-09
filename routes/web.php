@@ -18,6 +18,6 @@ Route::get('/', function () {
     return view('welcome');
 });
 Route::get('articles/', [ArticlesController::class, 'index']);
-Route::get('articles/{id}', [ArticlesController::class, 'index'])->where('id', '\d+');
+Route::get('articles/{id}', [ArticlesController::class, 'curArticle'])->where('id', '\d+');
 
 

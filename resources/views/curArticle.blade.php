@@ -22,25 +22,7 @@
     </head>
     <body class="antialiased">
         <div>
-            <table class="table">
-                <h2>Тэги</h2>
-                <thead>
-                    <tr>
-                        <th>Идентификатор</th>
-                        <th>Название</th>
-                        <th>Символьный код</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach ($tags as $tag)
-                    <tr>
-                        <td>{{ $tag->id }}</td>
-                        <td>{{ $tag->name}}</td>
-                        <td>{{ $tag->symbolcode}}</td>
-                    </tr>
-                    @endforeach
-                </tbody>
-            </table>
+        
 
             <table class="table">
                 <h2>Статьи</h2>
@@ -52,8 +34,23 @@
                         <th>Дата создания</th>
                         <th>Автор</th>
                     </tr>
+                </thead><table class="table">
+                <h2>Теги</h2>
+                <thead>
+                    <tr>
+                        <th>Название</th>
+                        <th>Символьный код</th>
+                    </tr>
                 </thead>
                 <tbody>
+                    @foreach ($tags as $tag)
+                    <tr>
+                        <td>{{ $tag->name }}</td>
+                        <td>{{ $tag->symbolcode }}</td>
+                    </tr>
+                    @endforeach
+                </tbody>
+            </table>
                     @foreach ($articles as $article)
                     <tr>
                         <td>{{ $article->name }}</td>
@@ -61,6 +58,24 @@
                         <td>{{ $article->content }}</td>
                         <td>{{ $article->create_time }}</td>
                         <td>{{ $article->author }}</td>
+                    </tr>
+                    @endforeach
+                </tbody>
+            </table>
+
+            <table class="table">
+                <h2>Теги</h2>
+                <thead>
+                    <tr>
+                        <th>Название</th>
+                        <th>Символьный код</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach ($tags as $tag)
+                    <tr>
+                        <td>{{ $tag->name }}</td>
+                        <td>{{ $tag->symbolcode }}</td>
                     </tr>
                     @endforeach
                 </tbody>

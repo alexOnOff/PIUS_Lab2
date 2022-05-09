@@ -30,9 +30,9 @@
           
                         <input type="text" name="symbolcode" id = "symbolcode" placeholder = "Символьный код"></input>
                         <input type="text" name="name" id = "name" placeholder = "Введите название статьи"></input>
-                     
+                        <input type="text" name="tags" id = "tags" placeholder = "Введите тег"></input>
                         <button type="submit">Поиск</button>
-                        <a href="http://127.0.0.1:8000/articles">Все покупатели</a>
+                        <a href="http://127.0.0.1:8000/articles">Все статьи</a>
                     </form>
                 </div>
             </div>
@@ -58,10 +58,29 @@
                         <td>{{ $article->content }}</td>
                         <td>{{ $article->create_time }}</td>
                         <td>{{ $article->author }}</td>
+                        
                     </tr>
                     @endforeach
                 </tbody>
                 {{$articles->links()}}
+            </table>
+
+            <table class="table">
+                <h2>Теги</h2>
+                <thead>
+                    <tr>
+                        <th>Название</th>
+                        <th>Символьный код</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach ($tags as $tag)
+                    <tr>
+                        <td>{{ $tag->name }}</td>
+                        <td>{{ $tag->symbolcode }}</td>
+                    </tr>
+                    @endforeach
+                </tbody>
             </table>
         </div>
     </body>

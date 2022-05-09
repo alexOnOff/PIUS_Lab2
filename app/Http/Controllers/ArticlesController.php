@@ -15,8 +15,6 @@ class ArticlesController extends Controller
      */
     public function index(Request $request)
     {
-        $articles = DB::table('articles')->simplePaginate(30);
-
         $query = Article::query();
         $query->when($request->filled('name'), function ($q) use ($request) {
             $q->where('name', 'like', $request->name);
@@ -24,29 +22,31 @@ class ArticlesController extends Controller
         $query->when($request->filled('symbolcode'), function ($q) use ($request) {
             $q->where('symbolcode', 'like', $request->symbolcode);
         });
-        $query->when($request->filled('content'), function ($q) use ($request) {
-            $q->where('email', 'like', $request->email);
-        });
-        $query->when($request->filled('create_time'), function ($q) use ($request) {
-            $q->where('phone', 'like', $request->phone);
-        });
-        $query->when($request->filled('author'), function ($q) use ($request) {
-            $q->where('blocked', $request->blocked);
-        });
 
-        return view('articles', ['articles' => $articles]);
+        $filterParam = $request->filled('tags');
+
+        if ($filterParam) {
+                $filteredArticles = Article::whereHas('tags', function($q) use ($filterParam) {
+                    $q->where('name', '=', $filterParam);
+                });
+            $query = $filteredArticles;
+        }     
+
+        $articles = $query->simplePaginate(25);
+        $tags = DB::table('tags')->simplePaginate(5);
+
+        return view('articles', ['articles' => $articles, 'tags' => $tags]);
     }
        
     public function curArticle($id){
 
         $articles = DB::table('articles')->where('id', '=', $id)->get();
-        $tags_id = DB::table('article_tags')->where('article_id', '=', $id);
-        foreach($tags_id as $tag){
-     #       $curTag = [$curTag, DB::table('tags')->where('id', '=', $tag->$id)];
-        }
+        $tags = DB::table('tags')->join('article_tags',function($join){
+            $join->on('tags.id', '=', 'article_tags.tag_id');
+        })->where('article_tags.article_id','=', $id)->orderBy('name')->get();
+
         
-       # ->orderByRaw('add_time DESC')->get();
-        return view('curArticle', ['articles' => $articles, 'adresses' => $adresses]);
+        return view('curArticle', ['articles' => $articles, 'tags' => $tags]);
     }
 
 }
